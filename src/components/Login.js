@@ -1,11 +1,33 @@
 import React, { Component } from 'react';
+import { base } from '../firebase/firebase';
 
 class Login extends Component {
+	
+	componentWillMount() {
+		this.candidatesRef = base.syncState('candidates', {
+			context: this,
+			state: 'candidates'
+		});
+	}
+
+	componentWillUnmount() {
+		base.removeBinding(this.candidatesRef);
+	}
+
 	submitForm(e) {		
-		if(this.refs.username.value === "jtroldan" && this.refs.password.value === "1234") {
-			alert("hello");
-			this.props.changeDisplayState(2);
+		let logFlag = false;		
+		for(let i = 0; i < this.state.candidates.length; i++) {	
+			if(this.refs.username.value === this.state.candidates[i].userName && this.refs.password.value === this.state.candidates[i].password) {								
+				this.props.setCurrentUser(this.state.candidates[i].id);
+				this.props.changeDisplayState(2);
+				logFlag = true;
+			}
 		}
+
+		if(!logFlag) {
+			alert('Invalid login...')
+		}
+
 		e.preventDefault();
 	}
 
