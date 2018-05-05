@@ -88,15 +88,17 @@ class AdminFeed extends Component {
 	togglePresence(e) {
 		let { id1 } = this.refs;
 		const index = id1.value - 1;
-		
+
 		let candidates = this.state.candidates;
-		candidates[index].present = !candidates[index].present;
 
-		this.setState({
-			...this.state,
-			candidates
-		})
+		if(index < candidates.length){			
+			candidates[index].present = !candidates[index].present;
 
+			this.setState({
+				...this.state,
+				candidates
+			})			
+		}
 		id1.value = '';
 		e.preventDefault();
 	}
