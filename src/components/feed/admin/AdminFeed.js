@@ -38,6 +38,8 @@ class AdminFeed extends Component {
 		};
 
 		this.setState({candidates});
+
+		const toPrint = [{...candidates[id]}];		
 	}
 
 	componentWillMount() {
@@ -68,9 +70,7 @@ class AdminFeed extends Component {
 			voted: false
 		}
 
-		candidates.push(newCandidate);
-		console.log(newCandidate);
-		alert(candidates.length);
+		candidates.push(newCandidate);				
 
 		
 		this.setState({
@@ -80,7 +80,8 @@ class AdminFeed extends Component {
 
 		name.value = '';
 		username.value = '';
-
+		
+		printImg([newCandidate]);
 		e.preventDefault();
 	}
 
@@ -127,7 +128,7 @@ class AdminFeed extends Component {
 					<input ref="username" type="text" />
 					<br /><br />
 					<button type="submit" className="btn btn-primary">Add</button>&nbsp;&nbsp;
-					<button className="btn btn-secondary" onClick={this.printItems.bind(this)}>Print Items</button>
+					<button className="btn btn-secondary" onClick={this.printItems.bind(this)}>Print Items</button>					
 				</form>				
 				<br /><br />
 				<form onSubmit={this.togglePresence.bind(this)} style={{position: "relative", left: "30%"}}>

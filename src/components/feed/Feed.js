@@ -30,7 +30,7 @@ class Feed extends Component {
 				<Header currentUser={this.state.candidates.length === 0 ? 
 								"..." : 
 								this.state.candidates[this.props.currentUserId].name}
-						/>
+						changeDisplayState={this.props.changeDisplayState}/>
 				<FeedSwitcher displayState={this.props.displayState}
 								changeDisplayState={this.props.changeDisplayState}
 							  currentUserId={this.props.currentUserId} 
