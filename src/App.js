@@ -12,14 +12,16 @@ class App extends Component {
   }  
   componentWillMount() {
     this.setState({
-      displayState: 2
+      displayState: 0      
     });
   }  
 
-  changeDisplayState(stateVal) {    
+  changeDisplayState(stateVal, currentUserId) {    
+    alert(currentUserId);
     this.setState({
       ...this.state,
-      displayState: stateVal
+      displayState: stateVal,
+      currentUserId: currentUserId
     });    
   } 
 

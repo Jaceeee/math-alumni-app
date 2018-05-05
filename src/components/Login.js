@@ -14,14 +14,20 @@ class Login extends Component {
 		base.removeBinding(this.candidatesRef);
 	}
 
+	
 	submitForm(e) {		
 		let logFlag = false;		
-		for(let i = 0; i < this.state.candidates.length; i++) {	
-			if(this.refs.username.value === this.state.candidates[i].userName && this.refs.password.value === this.state.candidates[i].password) {								
-				this.props.setCurrentUser(this.state.candidates[i].id);
-				this.props.changeDisplayState(2);
-				logFlag = true;
-			}
+		if(this.refs.username.value === 'admin' && this.refs.password.value === '1234') {
+			this.props.changeDisplayState(1, 41);
+			logFlag = true;
+		} else {
+			for(let i = 0; i < this.state.candidates.length; i++) {				
+				if(this.refs.username.value === this.state.candidates[i].userName && this.refs.password.value === this.state.candidates[i].password) {
+					this.props.changeDisplayState(2, this.state.candidates[i].id - 1);				
+					// this.props.setCurrentUser(this.state.candidates[i].id - 1);
+					logFlag = true;
+				}
+			}			
 		}
 
 		if(!logFlag) {

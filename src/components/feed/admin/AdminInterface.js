@@ -2,23 +2,35 @@ import React, { Component } from 'react';
 
 const CandidatesList = (props) => {
 	const candidates = props.candidates;
-	const candidateItems = props.candidates.map((candidate) => {
+	const candidateItems = candidates.map((candidate) => {
 		return <CandidateItem name={candidate.name}
-									 key={candidate.id.toString()} />
+							  voteCount={candidate.voteCount}
+							  id={candidate.id}
+							  key={candidate.id.toString()} />
 	});
 
 	return(
 		<table style={{position: "relative", left: "40%", maxHeight: "100px"}}>
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>Names</td>
+					<td>Votes</td>
+					<td>Present</td>
+				</tr>
+			</thead>
 			{candidateItems}
 		</table>
 	)
 }
 
 const CandidateItem = (props) => {
-	return(
+	return(		
 		<tbody>
 			<tr>
+				<td>{props.id}</td>
 				<td>{props.name}</td>
+				<td>{props.voteCount}</td>
 				<td><input type="checkbox" /></td>
 			</tr>
 		</tbody>

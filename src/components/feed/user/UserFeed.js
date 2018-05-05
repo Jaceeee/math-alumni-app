@@ -3,16 +3,15 @@ import Footer from './Footer';
 import { base } from '../../../firebase/firebase';
 
 const VotingList = (props) => {	
-	const candidates = props.candidates;	
-
+	const candidates = props.candidates;		
 	const votingList = candidates.map((candidate) => {
 		return(
 			<VotingItem name={candidate.name}
 									key={candidate.id.toString()}
+									id={candidate.id - 1}
 									increaseCount={props.increaseUserCount.bind(this)}
 									disableBoxes={props.disableBoxes}
-									disable={props.disable}
-									reset={props.reset}/>
+									checked={props.checked}/>
 		);
 	})
 
@@ -21,24 +20,21 @@ const VotingList = (props) => {
 	)
 }
 
-const VotingItem = (props) => {
-	if(props.reset) {
-		return(
-			<li>
-			{props.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-			<input disabled={props.disable} 
-						 type="checkbox" 						 
-						 onChange={props.increaseCount.bind(this)}
-						 checked="false"/>
-		</li>
-		)
+const VotingItem = (props) => {	
+	let toDisable = false;
+	let checked = props.checked;	
+	if(props.disableBoxes) {
+		if(!checked[props.id]) {
+			toDisable = true;
+		}
 	}
+	
 	return(	
 		<li>
 			{props.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-			<input disabled={props.disable} 
+			<input id={props.id}
+						 disabled={toDisable} 
 						 type="checkbox" 						 
 						 onChange={props.increaseCount.bind(this)}/>
 		</li>
@@ -49,7 +45,9 @@ class UserFeed extends Component {
 	constructor(){
 		super();
 		this.state = {
-			candidates: [{id: 1, name: "Abcede, Francis Daryl"}]
+			candidates: [{id: 1, name: "Abcede, Francis Daryl"}],
+			userVoteCount: 0,
+			disableBoxes: false,			
 		}
 	}
 
@@ -57,28 +55,81 @@ class UserFeed extends Component {
 		this.candidatesRef = base.syncState('candidates', {
 			context: this,
 			state: 'candidates'
-		});		
+		});				
+		let checked = new Array(120);
+		
+		for(let i = 0; i < checked.length; i++) {
+			checked[i] = false;
+		}
+
+		this.setState({
+			checked: checked
+		})
 	}
 
 	componentWillUnmount() {
 		base.removeBinding(this.candidatesRef);
 	}		
 
-	increaseUserQueuedCount(e) {
+	increaseUserQueuedCount(e) {		
 		let add = (e.target.checked) ? ((this.state.userVoteCount === 3) ? 0 : 1) : ((this.state.userVoteCount === 0) ? 0 : -1);		
 
-		this.setState({...this.state, userVoteCount: this.state.userVoteCount+add});		
+		let checked = this.state.checked;
+
+		checked[e.target.id] = true;
+		this.setState({...this.state, userVoteCount: this.state.userVoteCount+add, checked: checked});		
+
+		if(this.state.userVoteCount === 2) {
+			this.setState({...this.state, userVoteCount: this.state.userVoteCount+add, disableBoxes: true, checked: checked})
+		}
 	}
 
 	resetCount(e) {
+		let checked = new Array(120);
+		
+		for(let i = 0; i < checked.length; i++) {
+			checked[i] = false;
+		}
+		
 		this.setState({
 			...this.state,
 			userVoteCount: 0,
-			disableBoxes: false
+			disableBoxes: false,
+			checked: checked,
+			reset: true
 		})
 	}
 
+	submitForm(e) {		
+		alert(this.props.currentUserId);
+		let candidates = this.state.candidates;
+		let count = 0;
+		
+		for(let i = 0; i < candidates.length; i++) {			
+			if(this.state.checked[i]) {
+				candidates[i].voteCount++;
+				count++;
+			}
+		}
+
+		if(count === 3){			
+			candidates[this.props.currentUserId].voted = true;
+			this.setState({
+				...this.state,
+				candidates: candidates
+			});
+			alert('Your responses are now recorded.');
+		} else {
+			alert(`You need ${3 - count} more responses!`);
+		}
+
+		this.render();
+
+		e.preventDefault();
+	}
+
 	render() {		
+
 		return(			
 			<div>
 				<main>
@@ -88,28 +139,33 @@ class UserFeed extends Component {
 					<form action="">
 						<div className="row">											
 							<div className="col-sm-3">
-								<VotingList candidates={this.state.candidates.slice(0, 30)}														
-														increaseUserCount={this.increaseUserQueuedCount.bind(this)}													
-														/>
+								<VotingList candidates={this.state.candidates.slice(0, this.state.candidates.length / 4 * 1)}																	disableBoxes={this.state.disableBoxes}
+														increaseUserCount={this.increaseUserQueuedCount.bind(this)}
+														checked={this.state.checked}/>
 							</div>
 							<div className="col-sm-3">
-								<VotingList candidates={this.state.candidates.slice(30, 60)}														
+								<VotingList candidates={this.state.candidates.slice(this.state.candidates.length / 4 * 1, this.state.candidates.length / 2)}
+														disableBoxes={this.state.disableBoxes}
 														increaseUserCount={this.increaseUserQueuedCount.bind(this)}
-														/>
+														checked={this.state.checked}/>
 							</div>
 							<div className="col-sm-3">
-								<VotingList candidates={this.state.candidates.slice(60, 90)}														
+								<VotingList candidates={this.state.candidates.slice(this.state.candidates.length / 2, this.state.candidates.length / 4 * 3)}
+														disableBoxes={this.state.disableBoxes}
 														increaseUserCount={this.increaseUserQueuedCount.bind(this)}
-														/>
+														checked={this.state.checked}/>
 							</div>
 							<div className="col-sm-3">
-								<VotingList candidates={this.state.candidates.slice(90, 120)}														
+								<VotingList candidates={this.state.candidates.slice(this.state.candidates.length / 4 * 3, this.state.candidates.length)}
+														disableBoxes={this.state.disableBoxes}
 														increaseUserCount={this.increaseUserQueuedCount.bind(this)}
-														/>
+														checked={this.state.checked}/>
 							</div>
 						</div>
+						<button type="submit" onClick={this.submitForm.bind(this)} className="btn btn-primary">Submit</button>
 					</form>
 				</main>
+
 				<Footer userVoteCount={this.state.userVoteCount}
 								resetCount={this.resetCount.bind(this)}/>
 			</div>
@@ -122,7 +178,7 @@ export default UserFeed;
 
 /*this.setState({
 			candidates: [
-				{id: 1, name: "Abcede, Francis Daryl", voteCount: 0, present: true},
+				{id: 1, name: "Abcede, Francis Daryl", voteCount: 0, present: true, alreadyVoted: false},
 				{id: 2, name: "Albina, Julius", voteCount: 0, present: true},
 				{id: 3, name: "Albiso, Romil", voteCount: 0, present: true},
 				{id: 4, name: "Alcoseba, An Vinson", voteCount: 0, present: true},

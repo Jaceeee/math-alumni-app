@@ -13,7 +13,7 @@ class Feed extends Component {
 		}
 
 	}	
-	componentWillMount() {
+	componentWillMount() {		
 		this.candidatesRef = base.syncState('candidates', {
 			context: this,
 			state: 'candidates'
@@ -29,10 +29,12 @@ class Feed extends Component {
 			<div>
 				<Header currentUser={this.state.candidates.length === 0 ? 
 								"..." : 
-								this.state.candidates[/*this.props.currentUserId - 1*/0].name}
+								this.state.candidates[this.props.currentUserId].name}
 						/>
 				<FeedSwitcher displayState={this.props.displayState}
-							  currentUserId={this.props.currentUser} />				
+								changeDisplayState={this.props.changeDisplayState}
+							  currentUserId={this.props.currentUserId} 
+							  candidates={this.state.candidates}/>				
 
 			</div>
 		)
@@ -40,6 +42,13 @@ class Feed extends Component {
 }
 
 const FeedSwitcher = (props) => {	
+	console.log(`Display State: ${props.displayState}`);
+	if(props.displayState === 2) {
+		console.log("Hello");
+		if(props.candidates[props.currentUserId].voted) {
+			return <AlreadyVoted changeDisplayState={props.changeDisplayState} />
+		}
+	}
 	switch(props.displayState) {
 		case 1:
 			return(
@@ -51,9 +60,19 @@ const FeedSwitcher = (props) => {
 			)
 		default:
 			return(
-				<UserFeed />
+				<UserFeed currentUserId={props.currentUserId}/>
 			)			
 	}
 }
 
+const AlreadyVoted = (props) => {
+	return(
+		<div>
+			<br /><br /><br />
+			<h1>You have already voted.</h1>
+			<br />
+			<button onClick={props.changeDisplayState.bind(this, 0)}>Return to home</button>
+		</div>
+	)
+}
 export default Feed;
