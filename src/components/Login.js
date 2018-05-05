@@ -49,7 +49,7 @@ class Login extends Component {
 		    <form className="form-signin" onSubmit={this.submitForm.bind(this)}>		      
 		      <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
 		      <label htmlFor="inputEmail" className="sr-only">Username</label>
-		      <input ref="username" type="text" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus />
+		      <input ref="username" type="text" id="inputEmail" className="form-control" placeholder="Username" required autoFocus />
 		      <label htmlFor="inputPassword" className="sr-only">Password</label>
 		      <input ref="password" type="password" id="inputPassword" className="form-control" placeholder="Password" required />
 		      <div className="checkbox mb-3">
