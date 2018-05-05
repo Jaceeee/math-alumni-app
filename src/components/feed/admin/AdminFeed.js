@@ -120,6 +120,7 @@ class AdminFeed extends Component {
 	}
 
 	render() {		
+		
 		return(
 			<div>
 				<AdminInterface candidates={this.state.candidates}/>				
