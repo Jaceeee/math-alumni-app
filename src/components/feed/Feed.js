@@ -41,10 +41,8 @@ class Feed extends Component {
 	}
 }
 
-const FeedSwitcher = (props) => {	
-	console.log(`Display State: ${props.displayState}`);
-	if(props.displayState === 2) {
-		console.log("Hello");
+const FeedSwitcher = (props) => {		
+	if(props.displayState === 2) {		
 		if(props.candidates[props.currentUserId].voted) {
 			return <AlreadyVoted changeDisplayState={props.changeDisplayState} />
 		}
@@ -52,7 +50,7 @@ const FeedSwitcher = (props) => {
 	switch(props.displayState) {
 		case 1:
 			return(
-				<AdminFeed />
+				<AdminFeed changeDisplayState={props.changeDisplayState}/>
 			)
 		case 2:
 			return(

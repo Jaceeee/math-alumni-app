@@ -5,6 +5,7 @@ import { base } from '../../../firebase/firebase';
 const VotingList = (props) => {	
 	const candidates = props.candidates;		
 	const votingList = candidates.map((candidate) => {
+		if(candidate.present)
 		return(
 			<VotingItem name={candidate.name}
 									key={candidate.id.toString()}
@@ -100,8 +101,7 @@ class UserFeed extends Component {
 		})
 	}
 
-	submitForm(e) {		
-		alert(this.props.currentUserId);
+	submitForm(e) {				
 		let candidates = this.state.candidates;
 		let count = 0;
 		
@@ -162,7 +162,7 @@ class UserFeed extends Component {
 														checked={this.state.checked}/>
 							</div>
 						</div>
-						<button type="submit" onClick={this.submitForm.bind(this)} className="btn btn-primary">Submit</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" onClick={this.submitForm.bind(this)} className="btn btn-primary">Submit</button>
 					</form>
 				</main>
 

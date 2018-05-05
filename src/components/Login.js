@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { base } from '../firebase/firebase';
 
 class Login extends Component {
-	
+	constructor() {
+		super();
+		this.state = {
+			candidates: []
+		}
+	}
 	componentWillMount() {
 		this.candidatesRef = base.syncState('candidates', {
 			context: this,
@@ -37,7 +42,8 @@ class Login extends Component {
 		e.preventDefault();
 	}
 
-	render() {
+	render() {		
+		console.log(this.state.candidates);
 		return(
 			<div className="text-center">
 		    <form className="form-signin" onSubmit={this.submitForm.bind(this)}>		      

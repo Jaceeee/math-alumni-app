@@ -16,8 +16,7 @@ class App extends Component {
     });
   }  
 
-  changeDisplayState(stateVal, currentUserId) {    
-    alert(currentUserId);
+  changeDisplayState(stateVal, currentUserId) {        
     this.setState({
       ...this.state,
       displayState: stateVal,
@@ -25,8 +24,7 @@ class App extends Component {
     });    
   } 
 
-  setCurrentUser(userId) {
-    alert(userId);
+  setCurrentUser(userId) {    
     this.setState({
       ...this.state,
       currentUserId: userId
