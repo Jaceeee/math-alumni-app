@@ -39,7 +39,10 @@ class Login extends Component {
 			alert('Invalid login...')
 		}
 
+
+
 		e.preventDefault();
+		
 	}
 
 	render() {				

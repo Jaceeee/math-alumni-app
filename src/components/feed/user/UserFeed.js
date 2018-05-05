@@ -125,7 +125,7 @@ class UserFeed extends Component {
 
 		this.render();
 
-		e.preventDefault();
+		e.preventDefault();		
 	}
 
 	render() {		
@@ -178,7 +178,7 @@ export default UserFeed;
 
 /*this.setState({
 			candidates: [
-				{id: 1, name: "Abcede, Francis Daryl", voteCount: 0, present: true, alreadyVoted: false},
+				{id: 1, name: "Abcede, Francis Daryl", voteCount: 0, present: true, voted: false, password: },
 				{id: 2, name: "Albina, Julius", voteCount: 0, present: true},
 				{id: 3, name: "Albiso, Romil", voteCount: 0, present: true},
 				{id: 4, name: "Alcoseba, An Vinson", voteCount: 0, present: true},

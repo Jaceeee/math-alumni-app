@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { base } from '../../../firebase/firebase';
 
 const CandidatesList = (props) => {
-	const candidates = props.candidates;	
-	candidates.sort((a, b) => {
-		return b.voteCount - a.voteCount;
-	});
+	const candidates = props.candidates;		
+	let count = 1;	
 	const candidateItems = candidates.map((candidate) => {
 		return <CandidateItem name={candidate.name}
 							  voteCount={candidate.voteCount}
 							  key={candidate.id.toString()}
 							  id={candidate.id}
+							  item={count++}
 							  togglePresence={props.togglePresence}
 							  present={candidate.present} />
 	});
@@ -19,7 +18,7 @@ const CandidatesList = (props) => {
 		<table style={{position: "relative", left: "40%", maxHeight: "100px"}}>
 			<thead>
 				<tr>
-					<td><b>ID</b></td>
+					<td><b>Item</b></td>					
 					<td><b>Names</b></td>
 					<td><b>Votes</b></td>
 					<td><b>Present</b></td>
@@ -34,7 +33,7 @@ const CandidateItem = (props) => {
 	return(		
 		<tbody>
 			<tr>
-				<td>{props.id}</td>
+				<td>{props.item}</td>				
 				<td>{props.name}</td>
 				<td>{props.voteCount}</td>
 				<td><input id={props.id} checked={props.present} onChange={props.togglePresence.bind(this)} type="checkbox" /></td>
@@ -64,8 +63,11 @@ class AdminInterface extends Component {
 
 	togglePresence(e) {
 		let candidates = this.state.candidates;		
-		console.log(candidates[e.target.id - 1]);
-		candidates[e.target.id - 1].present = !(candidates[e.target.id - 1]);	
+		
+		for(let i = 0; i < candidates.length; i++) {
+			if(candidates[i].id == e.target.id)
+				candidates[e.target.id - 1].present = !(candidates[e.target.id - 1]);
+		}
 
 		console.log(candidates[e.target.id - 1]);
 		this.setState({
@@ -88,3 +90,15 @@ class AdminInterface extends Component {
 }
 
 export default AdminInterface;
+
+
+/*
+
+{61, "Librero, Joseph", e7be575d, jlibrero}
+{2, "Albina, Julius", e7be575d, jlibrero}
+{120, "Yap, Cheryl", 3af03218, cyap}
+{61, Librero, Joseph, e7be575d, jlibrero}
+{61, Librero, Joseph, e7be575d, jlibrero}
+{61, Librero, Joseph, e7be575d, jlibrero}
+
+*/
