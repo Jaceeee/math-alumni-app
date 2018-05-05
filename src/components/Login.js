@@ -42,8 +42,7 @@ class Login extends Component {
 		e.preventDefault();
 	}
 
-	render() {		
-		console.log(this.state.candidates);
+	render() {				
 		return(
 			<div className="text-center">
 		    <form className="form-signin" onSubmit={this.submitForm.bind(this)}>		      

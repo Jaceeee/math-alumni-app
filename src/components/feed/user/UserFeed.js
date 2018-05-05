@@ -3,7 +3,7 @@ import Footer from './Footer';
 import { base } from '../../../firebase/firebase';
 
 const VotingList = (props) => {	
-	const candidates = props.candidates;		
+	const candidates = props.candidates;
 	const votingList = candidates.map((candidate) => {
 		if(candidate.present)
 		return(

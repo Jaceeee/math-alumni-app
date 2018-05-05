@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { base } from '../../../firebase/firebase';
 
 const CandidatesList = (props) => {
-	const candidates = props.candidates;
-	console.log(props);
+	const candidates = props.candidates;	
+	candidates.sort((a, b) => {
+		return b.voteCount - a.voteCount;
+	});
 	const candidateItems = candidates.map((candidate) => {
 		return <CandidateItem name={candidate.name}
 							  voteCount={candidate.voteCount}
